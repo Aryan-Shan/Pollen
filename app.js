@@ -95,6 +95,7 @@ class PollenApp {
     onPeerDisconnected() {
         this.ui.resetConnectionState();
         this.dandelion.setMode('idle');
+        this.dandelion.clearPollen();
     }
 
     onPeerData(data) {

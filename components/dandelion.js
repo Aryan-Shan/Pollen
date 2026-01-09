@@ -3,14 +3,48 @@ export class Dandelion {
         // Container is #dandelion-container, but we target the .dandelion inside it or create it
         this.container = container.querySelector('#dandelion') || container;
         this.mode = 'idle';
+        this.idleInterval = null;
         this.init();
     }
 
     init() {
         this.build();
+        this.startIdleAnimation();
+    }
+
+    startIdleAnimation() {
+        if (this.idleInterval) clearInterval(this.idleInterval);
+        this.idleInterval = setInterval(() => {
+            if (this.mode === 'idle') {
+                this.shedSubtleSeed();
+            }
+        }, 3000); // Shed every 3 seconds
+    }
+
+    shedSubtleSeed() {
+        const head = this.container.querySelector('.head');
+        if (!head) return;
+
+        // Pick an existing regular seed that isn't already shedding
+        const seeds = head.querySelectorAll('.seed-wrapper.outter:not(.idle-shed):not(.receiving-seed)');
+
+        // If it's getting too sparse, don't shed or refill? Refill happens on mode change.
+        // Let's just stop shedding if below 20 seeds to keep it looking like a dandelion.
+        if (seeds.length < 20) return;
+
+        const target = seeds[Math.floor(Math.random() * seeds.length)];
+        target.classList.add('idle-shed');
+
+        // Cleanup after idle fly completes
+        setTimeout(() => {
+            if (target.parentNode === head) target.remove();
+        }, 8500);
     }
 
     build() {
+        const oldHead = this.container.querySelector('.head');
+        const persistentSeeds = oldHead ? Array.from(oldHead.querySelectorAll('.receiving-seed')) : [];
+
         this.container.innerHTML = '';
 
         // Structure: .head > .seed-wrapper.outter > .seed-wrapper.inner > .seed > .feather*12
@@ -58,6 +92,9 @@ export class Dandelion {
             const delayIndex = Math.random() * 20;
             outer.style.setProperty('--i', delayIndex);
         }
+
+        // Re-attach persistent seeds
+        persistentSeeds.forEach(s => head.appendChild(s));
 
         this.container.appendChild(head);
 
@@ -126,8 +163,22 @@ export class Dandelion {
 
             head.appendChild(outer);
 
-            // Cleanup
-            setTimeout(() => outer.remove(), 10000);
+            // NO CLEANUP - seeds stay stuck as requested
+        }
+    }
+
+    clearPollen() {
+        const head = this.container.querySelector('.head');
+        if (head) {
+            const persistentSeeds = head.querySelectorAll('.receiving-seed');
+            persistentSeeds.forEach(s => {
+                // Animate them falling off or just remove?
+                // Let's make them fade out
+                s.style.transition = 'opacity 2s ease-out, transform 2s ease-in';
+                s.style.opacity = '0';
+                s.style.transform = 'translateY(100vh)';
+                setTimeout(() => s.remove(), 2100);
+            });
         }
     }
 

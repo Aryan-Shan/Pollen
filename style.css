@@ -215,6 +215,8 @@ body {
        Actually user provided background image in style. 
        Let's stick to simple CSS or SVG mask found in codepen. 
        The provided CSS has a stroke background. */
+    transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Smooth layout shift */
 }
 
 /* Head */
@@ -337,6 +339,22 @@ body {
 
     100% {
         transform: translateY(-100vh) rotate(180deg);
+    }
+}
+
+/* Idle Shedding Animation */
+.idle-shed.outter {
+    animation: idle-fly 12s ease-in-out forwards !important;
+}
+
+@keyframes idle-fly {
+    0% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(25vw, -30vh) rotate(120deg) scale(0);
+        opacity: 0;
     }
 }
 
