@@ -1,0 +1,519 @@
+:root {
+    --primary-green: #015238;
+    --light-green: #4a8c76;
+    --accent-green: #a7d4c3;
+    --bg-color: #015238;
+    /* Matches Dandelion bg */
+    --text-color: #eaf4f0;
+    --panel-bg: rgba(1, 82, 56, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+
+    --font-main: 'Outfit', sans-serif;
+}
+
+[data-theme="light"] {
+    --bg-color: #f9fdfb;
+    --text-color: #1a2e26;
+    --panel-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(1, 82, 56, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    /* Sidebar layout */
+    align-items: flex-end;
+    /* As per provided CSS? maybe align items stretch */
+    justify-content: flex-start;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem 2rem;
+    z-index: 20;
+    pointer-events: none;
+    /* Let clicks pass */
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #fff;
+    /* Always white on dark green, or adapt? */
+    letter-spacing: -0.02em;
+    pointer-events: auto;
+}
+
+.main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    /* Sidebar left, Stage right */
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Sidebar Panel */
+.sidebar-panel {
+    width: 350px;
+    max-width: 90%;
+    height: auto;
+    max-height: calc(100vh - 4rem);
+    margin: 2rem;
+    margin-top: 5rem;
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    /* Enable scrolling */
+}
+
+.panel.secondary-panel {
+    width: 300px;
+    height: auto;
+    max-height: calc(100vh - 4rem);
+    margin: 2rem 0;
+    /* No left margin to stay close to sidebar */
+    margin-top: 5rem;
+    background: var(--panel-bg);
+    backdrop-filter: blur(8px);
+    z-index: 9;
+    padding: 1.5rem;
+}
+
+.sidebar-panel::-webkit-scrollbar,
+.secondary-panel::-webkit-scrollbar {
+    width: 0;
+    /* Hide default scrollbar for cleaner look */
+}
+
+.my-identity {
+    text-align: center;
+}
+
+.nature-id {
+    font-size: 1.8rem;
+    color: var(--accent-green);
+    margin: 0.5rem 0;
+    font-weight: 300;
+}
+
+#qrcode-container img,
+#qrcode-container canvas {
+    margin: 1rem auto;
+    border-radius: 8px;
+    padding: 4px;
+    background: white;
+}
+
+.connect-action {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+#remote-peer-id-input {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    font-family: var(--font-main);
+}
+
+#remote-peer-id-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.btn {
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 0.8rem 1.2rem;
+    font-family: var(--font-main);
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.primary-btn {
+    background-color: var(--accent-green);
+    color: var(--primary-green);
+    font-weight: 600;
+}
+
+.primary-btn:hover {
+    background-color: white;
+}
+
+.icon-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-green);
+    padding: 0.6rem;
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Dandelion Stage - Centered/Right */
+.dandelion-stage {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    /* Center dandelion horizontally */
+    pointer-events: none;
+    z-index: 1;
+    height: 100%;
+}
+
+/* Dandelion CSS from provided snippet */
+.dandelion {
+    position: relative;
+    width: 65vh;
+    /* Adjusted from height to width/aspect-ratio handling */
+    height: 65vh;
+    max-height: 65vw;
+    aspect-ratio: 1/1;
+    left: -10%;
+    /* Shift slightly left to visually center with sidebar */
+
+    /* Background stem/gradient placeholder from codepen? 
+       Actually user provided background image in style. 
+       Let's stick to simple CSS or SVG mask found in codepen. 
+       The provided CSS has a stroke background. */
+}
+
+/* Head */
+.head {
+    height: 30vh;
+    max-height: 30vw;
+    aspect-ratio: 1/1;
+    position: absolute;
+    top: 50%;
+    /* Adjustment for positioning */
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(15deg);
+}
+
+.seed-wrapper.outter {
+    width: 20vh;
+    max-width: 20vw;
+    aspect-ratio: 1/1;
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform: translateX(-50%);
+}
+
+.seed-wrapper.inner {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.seed {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform-origin: center bottom;
+}
+
+/* Seed Stem */
+.seed:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    height: 12vh;
+    /* Use longer stem visually */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    transform-origin: center bottom;
+}
+
+/* Seed Kernel */
+/* .seed:after could be the kernel */
+
+.feather {
+    width: 15%;
+    /* Relative to seed wrapper */
+    height: 15%;
+    position: absolute;
+    bottom: 100%;
+    /* At top of seed stem */
+    left: 50%;
+    transform-origin: center bottom;
+    background: white;
+    /* Simple shape */
+    border-radius: 50% 50% 0 0;
+    opacity: 0.8;
+}
+
+/* Use provided detailed SVG if possible, but for now simple CSS shapes for "feather" */
+.feather {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1' viewBox='0 0 1 1'><g fill='none' stroke='%23ffffff' stroke-width='0.1'><path d='M 0.5 0 C 0.324 0.293 0.422 0.793 0.5 1' vector-effect='non-scaling-stroke'/></g></svg>");
+    background-size: cover;
+    width: 4vh;
+    height: 4vh;
+    bottom: 12vh;
+    /* Match stem height */
+}
+
+
+/* Animations */
+/* We need to replicate the staggering. 
+   In JS we set --i variable. 
+   We define one animation and use calc() for delay.
+*/
+
+.transferring .seed-wrapper.outter {
+    animation: fly-away 7s cubic-bezier(0.265, 0.025, 0.495, 1.39) forwards;
+    /* animation-delay: calc(var(--i) * 0.1s); */
+    animation-delay: calc(var(--i) * 0.2s);
+}
+
+.transferring .seed-wrapper.inner {
+    animation: fly-up 5s ease-in-out forwards;
+    animation-delay: calc(var(--i) * 0.2s + 0.5s);
+}
+
+.transferring .seed {
+    animation: rotate 2s ease-out forwards;
+    animation-delay: calc(var(--i) * 0.2s);
+}
+
+@keyframes fly-away {
+    0% {}
+
+    100% {
+        transform: translateX(60vw) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes fly-up {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-100vh) rotate(180deg);
+    }
+}
+
+.active-transfers,
+.received-files {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.transfers-list {
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Prevent horizontal footer/scrollbar */
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-right: 12px;
+    /* Space before scrollbar */
+}
+
+/* Custom Scrollbar */
+.transfers-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.transfers-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.transfers-list::-webkit-scrollbar-thumb {
+    background: var(--accent-green);
+    border-radius: 4px;
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(0);
+    }
+}
+
+.sent-label {
+    font-size: 0.7rem;
+    color: var(--accent-green);
+    font-weight: 600;
+    margin-top: 0.2rem;
+}
+
+.share-btn {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Receiving Animation */
+.receiving-seed .seed:before {
+    background-color: #ffd700;
+    /* Yellow */
+}
+
+.receiving-seed .feather {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1' viewBox='0 0 1 1'><g fill='none' stroke='%23ffd700' stroke-width='0.1'><path d='M 0.5 0 C 0.324 0.293 0.422 0.793 0.5 1' vector-effect='non-scaling-stroke'/></g></svg>");
+}
+
+.receiving-seed.outter {
+    animation: fly-in 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+    animation-delay: calc(var(--i) * 0.2s) !important;
+    opacity: 0;
+    transform: translate(-60vw, -20vh) scale(0.5);
+}
+
+@keyframes fly-in {
+    0% {
+        transform: translate(-100vw, 20vh) scale(0.2) rotate(-45deg);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, 0) scale(1) rotate(0deg);
+        /* land centered on head */
+        opacity: 0.8;
+    }
+}
+
+.secondary-panel .transfers-list {
+    max-height: calc(100vh - 12rem);
+    padding-right: 16px;
+}
+
+.transfer-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.transfer-item.received-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+    width: 100%;
+    /* Ensure it takes full width of parent */
+}
+
+.transfer-item.received-item .file-info {
+    width: 100%;
+    /* Constrain info section for ellipsis */
+}
+
+.transfer-item .file-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.95rem;
+}
+
+.transfer-item .file-size {
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.download-btn {
+    width: 100%;
+    margin: 0;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+    background: var(--accent-green);
+    color: var(--primary-green);
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    max-width: 90%;
+}
+
+.hidden {
+    display: none !important;
+}
