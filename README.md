@@ -1,27 +1,29 @@
-# Pollen 🌿
+# Pollen
 
-Pollen is a beautiful, minimalist peer-to-peer file sharing application that makes sending files feel as natural as seeds drifting in the wind.
+Pollen is a minimalist peer-to-peer file sharing application designed to provide a natural and intuitive user experience. By utilizing WebRTC technology, Pollen enables direct browser-to-browser file transfers without the need for intermediary servers, ensuring both privacy and efficiency.
 
-![Pollen Preview](https://github.com/Aryan-Shan/Pollen/raw/main/preview.png) *(Note: Add your own preview screenshot here)*
+![Pollen Preview](https://drive.google.com/uc?export=view&id=1pBJQHjuOBl5gngTU-q61oAv_T53A-ig2)
 
-## ✨ Features
+## Features
 
-- **Direct P2P Sharing**: Files are transferred directly between browsers using [PeerJS](https://peerjs.com/). No central server stores your data.
-- **Dandelion Animation**: 
-  - **Sending**: Seeds fly away from your dandelion to the right as files are shared.
-  - **Receiving**: Yellow blossom seeds drift in from the left and attach to your dandelion as you receive "pollen."
-- **QR Code Connectivity**: Easily connect by scanning a peer's identity QR code.
-- **Glassmorphism UI**: A modern, nature-inspired design with elegant transparency and animations.
-- **Privacy First**: Secure, encrypted data channels for reliable file transfers.
+- **Direct P2P Sharing**: Leverages PeerJS and WebRTC for secure, direct data channels between users.
+- **Visual Feedback System**:
+  - **Sender View**: Seeds drift away from the central dandelion to indicate a file is being sent.
+  - **Receiver View**: Yellow seeds arrive and attach to the dandelion to indicate incoming data.
+- **QR Code Integration**: Peer connections can be established quickly by scanning identity QR codes.
+- **Modern Design**: Implements a glassmorphism aesthetic with high-performance CSS animations.
+- **Persistent Connection State**: Received markers remain available for the duration of the session.
 
-## 🚀 Getting Started
+## Technical Stack
 
-### Prerequisites
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+).
+- **Networking**: PeerJS (WebRTC implementation).
+- **Utilities**: qrcode.js (QR generation), html5-qrcode (QR scanning).
+- **Animations**: DOM-based particle system with CSS Keyframes.
 
-- A modern web browser (Chrome, Firefox, Safari, Edge).
-- A basic web server (optional, but recommended for local testing).
+## Installation and Setup
 
-### Installation
+### Local Operation
 
 1. **Clone the repository**:
    ```bash
@@ -29,36 +31,35 @@ Pollen is a beautiful, minimalist peer-to-peer file sharing application that mak
    cd Pollen
    ```
 
-2. **Open the application**:
-   - Simply open `index.html` in your browser.
-   - **Note**: For QR code scanning to work (camera access), you should ideally serve the files through a local server (e.g., `npx serve` or Live Server in VS Code).
+2. **Run a local server**:
+   Due to browser security policies regarding camera access (required for QR scanning) and JavaScript modules, it is recommended to serve the project using a local web server.
+   
+   Using Node.js:
+   ```bash
+   npx serve .
+   ```
+   
+   Alternatively, use the "Live Server" extension in VS Code.
 
-## 🛠️ Tech Stack
+3. **Access the application**:
+   Open your browser and navigate to the address provided by your local server.
 
-- **Core**: Vanilla HTML5, CSS3, JavaScript.
-- **P2P Engine**: PeerJS (WebRTC).
-- **QR Code**: qrcode.js & html5-qrcode.
-- **Design**: Modern CSS with CSS Variables and Keyframe Animations.
+### Peer Connection
 
-## 📁 Project Structure
+To share files between two devices:
+1. Open the application on both devices.
+2. Share the Peer ID or QR code from one device.
+3. On the second device, enter the Peer ID or scan the QR code to connect.
+4. Drag and drop files or use the 'Share File' button to begin the transfer.
 
-```text
-Pollen/
-├── components/
-│   ├── dandelion.js     # DOM-based dandelion particle system
-│   ├── peer-manager.js  # PeerJS connection & chunked transfer logic
-│   └── ui-controller.js # UI state & list management
-├── utils/
-│   ├── id-generator.js  # Nature-themed peer ID generator
-│   └── qr-manager.js    # QR code generation & scanning
-├── app.js               # Main application orchestrator
-├── style.css            # Styling and animations
-└── index.html           # Main entry point
-```
+## Project Structure
 
-## 📜 License
+- `components/`: Core application logic (Dandelion animation, Peer management, UI control).
+- `utils/`: Helper scripts for ID generation and QR manipulation.
+- `app.js`: Main entry point and application orchestration.
+- `style.css`: Comprehensive design system and animation logic.
+- `index.html`: Application structure.
 
-Distributed under the MIT License. See `LICENSE` for more information.
+## License
 
----
-*Created with ❤️ for a more natural web.*
+This project is licensed under the MIT License.
